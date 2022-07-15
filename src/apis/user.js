@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export const login = (mobile, code) => {
+const login = (mobile, code) => {
   return request({
     url: '/v1_0/authorizations',
     method: 'POST',
@@ -8,3 +8,10 @@ export const login = (mobile, code) => {
   });
 };
 
+const sendCode = (mobile) => {
+  return request({
+    url: `/v1_0/sms/codes/${mobile}`
+  });
+};
+export { login, sendCode };
+// 不能这样写
