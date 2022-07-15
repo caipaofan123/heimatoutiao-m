@@ -6,7 +6,31 @@ const routes = [
   {
     path: '/login',
     component: () => import('@/views/Login') 
+  },
+  {
+    path: '/',
+    component: () => import('@/views/Layout'),
+    redirect: '/ ',
+    children: [
+      {
+        path: '/ ',
+        component: () => import('@/views/Home') 
+      },
+      {
+        path: '/qa',
+        component: () => import('@/views/QA') 
+      },
+      {
+        path: '/video',
+        component: () => import('@/views/Video') 
+      },
+      {
+        path: '/profile',
+        component: () => import('@/views/My') 
+      }
+    ]
   }
+
 ];
 
 const router = new VueRouter({
