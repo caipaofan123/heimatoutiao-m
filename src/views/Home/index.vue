@@ -27,6 +27,8 @@
 import EditChannelPopup from './components/EditChannelPopup.vue';
 import ArticleList from './components/ArticleList.vue';
 import {
+  addMychannel,
+  delMychannel,
   getMyChannels,
   getMyChannelsByLocal,
   setMyChannelsToLocal
@@ -65,7 +67,9 @@ export default {
             // console.log(data.data.channels);
           }
         } else {
-          // 
+          const { data } = await getMyChannels();
+          this.myChannels = data.data.channels;
+          // console.log(data.data.channels);
         }
       } catch (error) {
         this.$toast.fail('请重新获取频道列表');
@@ -74,20 +78,34 @@ export default {
     showPopup() {
       this.$refs.popup.isShow = true;
     },
-    delMychannels(id) {
+    async delMychannels(id) {
       this.myChannels = this.myChannels.filter((item) => item.id !== id);
       if (!this.isLogin) {
         setMyChannelsToLocal(this.myChannels);
+      } else {
+        try {
+          await delMychannel(id);
+        } catch (error) {
+          this.$toast.fail('删除失败');
+        }
       }
+      this.$toast.success('删除成功');
     },
     changeActive(index) {
       this.active = index;
     },
-    addMyChannel(item) {
+    async addMyChannel(item) {
       this.myChannels.push(item);
       if (!this.isLogin) {
         setMyChannelsToLocal(this.myChannels);
+      } else {
+        try {
+          await addMychannel(item.id, this.myChannels.length);
+        } catch (error) {
+          return this.$toast.fail('添加失败');
+        }
       }
+      this.$toast.success('添加成功');
     }
   }
 };
