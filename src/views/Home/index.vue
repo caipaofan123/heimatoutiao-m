@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar class="navbar">
       <template #title>
-        <van-button round><van-icon name="search" />搜索</van-button>
+        <van-button round @click="$router.push('/search')"><van-icon name="search" />搜索</van-button>
       </template>
     </van-nav-bar>
 
@@ -114,11 +114,13 @@ export default {
 <style scoped lang="less">
 .navbar {
   background-color: #3296fa;
+  background-color: gold;
   color: #fff;
   .van-button {
     width: 555px;
     height: 64px;
     background-color: #5babfb;
+    background-color: goldenrod;
   }
   :deep(.van-nav-bar__title) {
     max-width: unset;
@@ -131,6 +133,8 @@ export default {
   }
   .van-button--default {
     border: 0.02667rem solid #5babfb;
+    border: 0.02667rem solid goldenrod;
+    
   }
 }
 //tabs选项卡
