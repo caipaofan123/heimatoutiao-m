@@ -105,12 +105,12 @@ export default {
       try {
         const res = await login(this.mobile, this.code);
         this.$store.commit('setUser', res.data.data); 
-        console.log(res);
-        console.log(res.data);
+        // console.log(res);
+        // console.log(res.data);
         this.$router.push('/profile');
         this.$toast.success('登录成功');
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         const status = error.response.status;
         let message = '登录失败，请刷新重试';
         if (status === 400) {
