@@ -1,6 +1,10 @@
 <template>
   <div>
-    <van-cell v-for="(item, index) in highlightData" :key="index">
+    <van-cell
+      v-for="(item, index) in highlightData"
+      :key="index"
+      @click="tosearch(index)"
+    >
       <template #icon>
         <van-icon name="search" class="search-icon" />
       </template>
@@ -47,11 +51,14 @@ export default {
   methods: {
     async getSearchSuggestions() {
       const res = await getSearchSuggestions(this.keywords);
-      console.log(res);
+      // console.log(res);
       if (res.data.data.options.length === 0) {
         this.$toast.fail('没有搜索建议');
       }
       this.suggestions = res.data.data.options.filter(Boolean); // 过滤假值
+    },
+    tosearch(index) {
+      this.$emit('tosearchsug', this.suggestions[index]);
     }
   }
 };

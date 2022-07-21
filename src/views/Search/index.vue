@@ -15,11 +15,20 @@
     <!-- <SearchHistory></SearchHistory>
     <SearchSuggestion></SearchSuggestion>
     <SearchResult></SearchResult> -->
-    <component :is="componentName" :keywords="keywords"></component>
+    <component
+      :is="componentName"
+      :keywords="keywords"
+      @his="hisFn"
+      @clear="clearFn"
+      @tosearch="tosearchFn"
+      @tosearchsug="tosearchsug"
+      :history="history"
+    ></component>
   </div>
 </template>
 
 <script>
+import storage from '@/utils/storage';
 import SearchHistory from './components/SearchHistory.vue';
 import SearchResult from './components/SearchResult.vue';
 import SearchSuggestion from './components/SearchSuggestion.vue';
@@ -32,7 +41,9 @@ export default {
   },
   data() {
     return {
+      // hiskey: '',
       keywords: '',
+      history: storage.get('HISTORY') || [],
       isShowSearchResults: false
     };
   },
@@ -48,17 +59,38 @@ export default {
     }
   },
   mounted() {},
-
+  watch: {
+    history(value) {
+      storage.set('HISTORY', value);
+    }
+  },
   methods: {
     onSearch() {
       //   this.componentName = SearchResult;
       this.isShowSearchResults = true;
+      this.history.unshift(this.keywords);
+      // storage.set('HISTORY', this.history);
     },
     onCancel() {
       this.$router.go(-1);
     },
     visibleSearchSuggestion() {
       this.isShowSearchResults = false;
+    },
+    hisFn() {
+      storage.remove('HISTORY');
+      this.history = [];
+    },
+    clearFn(index) {
+      this.history.splice(index, 1);
+    },
+    tosearchFn(item) {
+      this.keywords = item;
+      this.onSearch();
+    },
+    tosearchsug(item) {
+      this.keywords = item;
+      this.onSearch();
     }
   }
 };
