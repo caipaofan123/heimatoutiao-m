@@ -4,11 +4,13 @@
       :title="articleInfo.title"
       :label="articleDesc"
       v-if="articleInfo.cover.type === 0"
+      @click="todetail(articleInfo.art_id)"
     />
     <van-cell
       :title="articleInfo.title"
       :label="articleDesc"
       v-if="articleInfo.cover.type === 1"
+      @click="todetail(articleInfo.art_id)"
     >
       <van-image
         width="3rem"
@@ -16,7 +18,11 @@
         :src="articleInfo.cover.images[0]"
       />
     </van-cell>
-    <van-cell :title="articleInfo.title" v-if="articleInfo.cover.type === 3">
+    <van-cell
+      :title="articleInfo.title"
+      v-if="articleInfo.cover.type === 3"
+      @click="todetail(articleInfo.art_id)"
+    >
       <template #label>
         <van-image
           v-for="(item, index) in articleInfo.cover.images"
@@ -47,6 +53,7 @@ export default {
   computed: {
     articleDesc() {
       const art = this.articleInfo;
+      // console.log(art);
       const time = dayjs(art.pubdate).fromNow();
       const articleDesc = `${art.aut_name} ${art.comm_count}评论 ${time}`;
       return articleDesc;
@@ -54,7 +61,12 @@ export default {
   },
   mounted() {},
 
-  methods: {}
+  methods: {
+    todetail(id) {
+      this.$router.push(`/detail/${id}`);
+      this.$store.state.id = id;
+    }
+  }
 };
 </script>
 

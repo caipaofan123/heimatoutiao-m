@@ -9,7 +9,8 @@ export default new Vuex.Store({
     user:
       // JSON.parse(localStorage.getItem('HEIMA_TOUTIAO')) || {}
       // storage.get('HEIMA_TOUTIAO') || {}
-      getToken() || {}
+      getToken() || {},
+    id: 7909
   },
   getters: {},
   mutations: {
@@ -21,7 +22,7 @@ export default new Vuex.Store({
       state.user = payload;
       // localStorage.setItem('HEIMA_TOUTIAO', JSON.stringify(state.user));
       // storage.set('HEIMA_TOUTIAO', payload);
-      setToken(payload)
+      setToken(payload);
     }
   },
   actions: {},
