@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import storage from '@/utils/storage';
 import dayjs from '@/utils/dayjs';
 export default {
   name: 'ArticleItem',
@@ -65,6 +66,7 @@ export default {
     todetail(id) {
       this.$router.push(`/detail/${id}`);
       this.$store.state.id = id;
+      storage.set('ART_ID', id);
     }
   }
 };

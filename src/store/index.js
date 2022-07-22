@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { getToken, setToken } from '@/utils';
+import storage from '@/utils/storage'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -10,7 +11,7 @@ export default new Vuex.Store({
       // JSON.parse(localStorage.getItem('HEIMA_TOUTIAO')) || {}
       // storage.get('HEIMA_TOUTIAO') || {}
       getToken() || {},
-    id: 7909
+    id: storage.get('ART_ID') || 8183
   },
   getters: {},
   mutations: {

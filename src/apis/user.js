@@ -24,5 +24,39 @@ const getUserInfo = () => {
   });
 };
 
+export const upPhoto = (file) => {
+  return request({
+    url: '/v1_0/user/photo',
+    method: 'PATCH',
+    Headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    data: {
+      photo: file
+    }
+  });
+};
+
+export const getUser = () => {
+  return request({
+    url: '/v1_0/user/profile'
+  });
+};
+
+export const editUser = (name, gender, birthday) => {
+  return request({
+    url: '/v1_0/user/profile',
+    method: 'PATCH',
+    Headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      name,
+      gender,
+      birthday
+    }
+  });
+};
+
 export { login, sendCode, getUserInfo };
 // 不能这样写
