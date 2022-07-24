@@ -26,6 +26,73 @@ export const getComments = (type, source) => {
   });
 };
 
+export const like = (id) => {
+  return request({
+    url: '/v1_0/article/likings',
+    method: 'POST',
+    Headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      target: id
+    }
+  });
+};
+
+export const nolike = (id) => {
+  return request({
+    url: `/v1_0/article/likings/${id}`,
+    method: 'DELETE',
+    Headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
+};
+
+export const collection = (id) => {
+  return request({
+    url: '/v1_0/article/collections',
+    method: 'POST',
+    Headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      target: id
+    }
+  });
+};
+
+export const nocollection = (id) => {
+  return request({
+    url: `/v1_0/article/collections/${id}`,
+    method: 'DELETE',
+    Headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
+};
+
+export const likecom = (id) => {
+  return request({
+    url: '/v1_0/comment/likings',
+    method: 'POST',
+    Headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      target: id
+    }
+  });
+};
+export const nolikecom = (id) => {
+  return request({
+    url: `/v1_0/comment/likings/${id}`,
+    method: 'DELETE',
+    Headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  });
+};
 // export const getComments2 = (source) => {
 //   return request({
 //     url: '/v1_0/comments',

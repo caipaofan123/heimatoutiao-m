@@ -70,7 +70,7 @@ export default {
     async loadNextPage() {
       try {
         const { data } = await getArticleList(this.id, this.pre_timestamp);
-        console.log(data);
+        // console.log(data);
         if (!data.data.pre_timestamp) {
           this.finished = true;
         }

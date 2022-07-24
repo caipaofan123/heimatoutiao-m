@@ -24,16 +24,14 @@ const getUserInfo = () => {
   });
 };
 
-export const upPhoto = (file) => {
+export const upPhoto = (data) => {
   return request({
     url: '/v1_0/user/photo',
     method: 'PATCH',
     Headers: {
       'Content-Type': 'multipart/form-data'
     },
-    data: {
-      photo: file
-    }
+    data
   });
 };
 
@@ -54,6 +52,32 @@ export const editUser = (name, gender, birthday) => {
       name,
       gender,
       birthday
+    }
+  });
+};
+
+export const followings = (id) => {
+  return request({
+    url: '/v1_0/user/followings',
+    method: 'POST',
+    Headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      target: id
+    }
+  });
+};
+
+export const delfollowings = (id) => {
+  return request({
+    url: `/v1_0/user/followings/${id}`,
+    method: 'DELETE',
+    Headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data: {
+      target: id
     }
   });
 };

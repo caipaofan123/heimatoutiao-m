@@ -19,6 +19,7 @@ module.exports = {
     'quote-props': 0,
     'vue/multi-word-component-names': 0,
     'eol-last': 0,
-    'vue/no-mutating-props': 0
+    'vue/no-mutating-props': 0,
+    'no-dupe-keys': 0
   }
 };

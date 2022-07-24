@@ -1,7 +1,9 @@
 <template>
   <div>
     <van-cell v-for="item in commentlist" :key="item.com_id">
-      <van-icon name="good-job-o" />赞
+      <van-icon name="good-job-o" v-if="!iscom" @click="like(item.com_id)" />
+      <van-icon name="good-job" v-else @click="nolike(item.com_id)" />
+      赞
       <template #icon>
         <van-image round width="1rem" height="1rem" :src="item.aut_photo" />
       </template>
@@ -94,7 +96,7 @@
 </template>
 
 <script>
-import { getComments, setComments } from '@/apis';
+import { getComments, setComments, likecom, nolikecom } from '@/apis';
 export default {
   name: 'HeimaMComment',
   created() {
@@ -113,7 +115,9 @@ export default {
       jutiCom: {},
       isshowpop: false,
       textvalue: '',
-      smcomlist: []
+      smcomlist: [],
+      iscom: false,
+      color: '#000'
     };
   },
 
@@ -150,7 +154,24 @@ export default {
       this.smcomlist = data.data.results;
       console.log(data);
       // this.$refs.com.getComments();
-      this.textvalue = ''
+      this.textvalue = '';
+    },
+    async like(id) {
+      const res = await likecom(id);
+      console.log(res);
+      if (res.data.data.target) {
+        this.iscom = true;
+        // const index = this.commentlist.findIndex((item) => item.com_id === id);
+        
+        // console.log(index);
+      }
+    },
+    async nolike(id) {
+      const res = await nolikecom(id);
+      console.log(res);
+      if (!res.data) {
+        this.iscom = false;
+      }
     }
   }
 };

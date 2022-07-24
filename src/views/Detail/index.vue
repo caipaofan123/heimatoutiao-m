@@ -23,7 +23,22 @@
       </van-col>
       <van-col span="11">
         <van-row class="code-row" type="flex" align="center" justify="end">
-          <van-button class="code-btn" round size="mini">关注</van-button>
+          <van-button
+            class="code-btn"
+            round
+            size="mini"
+            @click="followings(artical.aut_id)"
+            v-if="isfollow"
+            >关注</van-button
+          >
+          <van-button
+            class="follow-btn"
+            round
+            size="small"
+            @click="delfollowings(artical.aut_id)"
+            v-else
+            >已关注</van-button
+          >
         </van-row>
       </van-col>
     </van-row>
@@ -47,14 +62,13 @@
         >发布</van-button
       >
     </van-popup>
-    
   </div>
 </template>
 
 <script>
 import Comment from './components/Comment.vue';
 import Commentline from './components/CommentLine.vue';
-import { getDetail, setComments } from '@/apis';
+import { getDetail, setComments, followings, delfollowings } from '@/apis';
 export default {
   name: 'HeimaMIndex',
   created() {
@@ -73,7 +87,11 @@ export default {
   },
 
   mounted() {},
-
+  computed: {
+    isfollow() {
+      return !this.artical.is_followed;
+    }
+  },
   methods: {
     async getDetail() {
       const id = this.$store.state.id;
@@ -81,6 +99,7 @@ export default {
       // console.log(res);
       // console.log(this.$children);
       this.artical = res.data.data;
+      console.log(this.artical);
     },
     onClickLeft() {
       this.$router.back();
@@ -92,7 +111,17 @@ export default {
       console.log(res);
       this.isshowpop = false;
       this.$refs.com.getComments();
-      this.textvalue = ''
+      this.textvalue = '';
+    },
+    async followings(id) {
+      const res = await followings(id);
+      console.log(res);
+      this.artical.is_followed = !this.artical.is_followed;
+    },
+    async delfollowings(id) {
+      const res = await delfollowings(id);
+      console.log(res);
+      this.artical.is_followed = !this.artical.is_followed;
     }
   }
 };
@@ -109,11 +138,16 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  width: 100%;
+  width: 750px;
   z-index: 99;
 }
 :deep(.content) {
   font-size: 12px;
+
+  display: flex;
+  // position: absolute;
+  flex: 1;
+  overflow-y: auto;
   //   width: 100%;
 }
 .commentlist {
@@ -130,5 +164,10 @@ export default {
 }
 .btn {
   width: 110px;
+}
+.row2 {
+  .van-col {
+    height: 100%;
+  }
 }
 </style>

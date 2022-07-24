@@ -7,21 +7,50 @@
         ></van-col
       >
       <van-col span="3"><van-icon class="van-icon" name="comment-o" /></van-col>
-      <van-col span="3"><van-icon class="van-icon" name="star-o" /></van-col>
       <van-col span="3"
-        ><van-icon class="van-icon" name="good-job-o"
-      /></van-col>
+        ><van-icon
+          class="van-icon"
+          name="star-o"
+          v-if="!isstar"
+          @click="collection(artid)"
+        />
+        <van-icon
+          class="van-icon"
+          name="star"
+          v-else
+          @click="nocollection(artid)"
+        />
+      </van-col>
+      <van-col span="3"
+        ><van-icon
+          class="van-icon"
+          name="good-job-o"
+          v-if="!islike"
+          @click="good(artid)"
+        />
+        <van-icon
+          class="van-icon"
+          name="good-job"
+          v-else
+          @click="nogood(artid)"
+        />
+      </van-col>
       <van-col span="3"><van-icon class="van-icon" name="share-o" /></van-col>
     </van-row>
   </div>
 </template>
 
 <script>
+import { like, nolike, collection, nocollection } from '@/apis';
 export default {
   name: 'HeimaMCommentLine',
 
   data() {
-    return {};
+    return {
+      artid: this.$store.state.id,
+      islike: false,
+      isstar: false
+    };
   },
 
   mounted() {},
@@ -29,6 +58,35 @@ export default {
   methods: {
     clickFn() {
       this.$emit('clickFn');
+    },
+    async good(artid) {
+      const res = await like(artid);
+      console.log(res);
+      if (res.data.data.target) {
+        this.islike = true;
+      }
+    },
+    async nogood(artid) {
+      const res = await nolike(artid);
+      console.log(res);
+      if (!res.data) {
+        this.islike = false;
+      }
+    },
+    async collection(artid) {
+      console.log(111);
+      const res = await collection(artid);
+      console.log(res);
+      if (res.data.data.target) {
+        this.isstar = true;
+      }
+    },
+    async nocollection(artid) {
+      const res = await nocollection(artid);
+      console.log(res);
+      if (!res.data) {
+        this.isstar = false;
+      }
     }
   }
 };
@@ -46,7 +104,7 @@ export default {
   position: fixed;
   left: 0;
   bottom: 0;
-  width: 100%;
+  width: 750px;
   background: hotpink;
   text-align: center;
   :deep(.van-icon) {

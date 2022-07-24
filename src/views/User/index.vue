@@ -30,7 +30,7 @@
       <van-icon name="arrow" class="arrow" />
     </van-cell>
     <van-cell title="性别" @click="genderpick">
-      <span class="right">{{ { 0: '女', 1: '男' }[user.gender] }}</span>
+      <span class="right">{{ { 0: '男', 1: '女' }[user.gender] }}</span>
       <van-icon name="arrow" class="arrow" />
     </van-cell>
     <van-cell title="生日" @click="setBirth">
@@ -68,16 +68,30 @@
       <input type="text" name="" id="" v-model="namevalue" />
       <van-button @click="upname">确认</van-button>
     </van-popup>
+
+    <!-- 编辑头像弹层 -->
+    <van-popup
+      v-model="isUpdatePhotoShow"
+      style="height: 100%"
+      position="bottom"
+    >
+      <updateavatar :imagUrl="imagUrl" v-if="isUpdatePhotoShow" @close="isUpdatePhotoShow = false" @update-photo="user.photo = $event"></updateavatar>
+    </van-popup>
+    <!-- 编辑头像弹层 -->
   </div>
 </template>
 
 <script>
+import updateavatar from './components/updateavatar.vue';
 import dayjs from '@/utils/dayjs';
-import { upPhoto, getUser, editUser } from '@/apis';
+import { getUser, editUser } from '@/apis';
 export default {
   name: 'HeimaMIndex',
   created() {
     this.getUser();
+  },
+  components: {
+    updateavatar
   },
   data() {
     return {
@@ -89,7 +103,9 @@ export default {
       showDayPicker: false,
       showNamePicker: false,
       columns: [0, 1],
-      namevalue: ''
+      namevalue: '',
+      isUpdatePhotoShow: false,
+      imagUrl: ''
     };
   },
 
@@ -112,8 +128,11 @@ export default {
       const fileList = e.target.files.length;
       if (fileList === 0) return this.$toast.fail('请选择文件！');
       const file = e.target.files[0];
-      const res = await upPhoto(file);
-      console.log(res);
+       this.imagUrl = window.URL.createObjectURL(file);
+      
+      // const res = await upPhoto(file);
+      // console.log(file);
+      this.isUpdatePhotoShow = true;
     },
     async getUser() {
       const res = await getUser();
@@ -126,7 +145,7 @@ export default {
     onConfirm(value) {
       this.user.gender = value;
       this.showPicker = false;
-      this.editUser()
+      this.editUser();
     },
     setBirth() {
       this.showDayPicker = true;
@@ -134,12 +153,12 @@ export default {
     dayConfirm(value) {
       this.user.birthday = dayjs(value).format('YYYY-MM-DD');
       this.showDayPicker = false;
-      this.editUser()
+      this.editUser();
     },
     upname() {
       this.showNamePicker = false;
       this.user.name = this.namevalue;
-      this.editUser()
+      this.editUser();
     },
     async editUser() {
       const res = await editUser(
