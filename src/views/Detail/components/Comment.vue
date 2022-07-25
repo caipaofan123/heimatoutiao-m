@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-cell v-for="item in commentlist" :key="item.com_id">
-      <van-icon name="good-job-o" v-if="!iscom" @click="like(item.com_id)" />
+      <van-icon name="good-job-o" v-if="!item.is_liking" @click="like(item.com_id)" />
       <van-icon name="good-job" v-else @click="nolike(item.com_id)" />
       赞
       <template #icon>
@@ -127,7 +127,7 @@ export default {
     async getComments() {
       const id = this.$store.state.id;
       const res = await getComments('a', id);
-      // console.log(res);
+      console.log(res);
       this.commentlist = res.data.data.results;
       // console.log(this.commentlist);
     },
@@ -136,7 +136,7 @@ export default {
       this.isshowcom = true;
       const index = this.commentlist.findIndex((item) => item.com_id === id);
       this.jutiCom = this.commentlist[index];
-      console.log(this.jutiCom);
+      // console.log(this.jutiCom);
       const { data } = await getComments('c', id);
       this.smcomlist = data.data.results;
     },
@@ -160,9 +160,9 @@ export default {
       const res = await likecom(id);
       console.log(res);
       if (res.data.data.target) {
-        this.iscom = true;
-        // const index = this.commentlist.findIndex((item) => item.com_id === id);
-        
+        // this.iscom = true;
+        const index = this.commentlist.findIndex((item) => item.com_id === id);
+        this.commentlist[index].is_liking = true
         // console.log(index);
       }
     },
@@ -170,7 +170,9 @@ export default {
       const res = await nolikecom(id);
       console.log(res);
       if (!res.data) {
-        this.iscom = false;
+        // this.iscom = false;
+        const index = this.commentlist.findIndex((item) => item.com_id === id);
+        this.commentlist[index].is_liking = false
       }
     }
   }

@@ -43,7 +43,9 @@
       </van-col>
     </van-row>
 
-    <article class="content"><span v-html="artical.content"></span></article>
+    <article class="content markdown-body">
+      <span v-html="artical.content"></span>
+    </article>
 
     <van-divider>正文结束</van-divider>
     <Comment ref="com"></Comment>
@@ -128,6 +130,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import './github-markdown.css' ;
 .container {
   padding-top: 46px;
   padding-bottom: 100px;

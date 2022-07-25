@@ -30,7 +30,7 @@
       <van-icon name="arrow" class="arrow" />
     </van-cell>
     <van-cell title="性别" @click="genderpick">
-      <span class="right">{{ { 0: '男', 1: '女' }[user.gender] }}</span>
+      <span class="right">{{ columns[user.gender] }}</span>
       <van-icon name="arrow" class="arrow" />
     </van-cell>
     <van-cell title="生日" @click="setBirth">
@@ -75,7 +75,12 @@
       style="height: 100%"
       position="bottom"
     >
-      <updateavatar :imagUrl="imagUrl" v-if="isUpdatePhotoShow" @close="isUpdatePhotoShow = false" @update-photo="user.photo = $event"></updateavatar>
+      <updateavatar
+        :imagUrl="imagUrl"
+        v-if="isUpdatePhotoShow"
+        @close="isUpdatePhotoShow = false"
+        @update-photo="user.photo = $event"
+      ></updateavatar>
     </van-popup>
     <!-- 编辑头像弹层 -->
   </div>
@@ -102,7 +107,8 @@ export default {
       showPicker: false,
       showDayPicker: false,
       showNamePicker: false,
-      columns: [0, 1],
+      columns: ['男', '女'],
+      // gender: ['男', '女'],
       namevalue: '',
       isUpdatePhotoShow: false,
       imagUrl: ''
@@ -128,8 +134,8 @@ export default {
       const fileList = e.target.files.length;
       if (fileList === 0) return this.$toast.fail('请选择文件！');
       const file = e.target.files[0];
-       this.imagUrl = window.URL.createObjectURL(file);
-      
+      this.imagUrl = window.URL.createObjectURL(file);
+
       // const res = await upPhoto(file);
       // console.log(file);
       this.isUpdatePhotoShow = true;
@@ -143,7 +149,7 @@ export default {
       this.showPicker = true;
     },
     onConfirm(value) {
-      this.user.gender = value;
+      this.user.gender = this.columns.indexOf(value);
       this.showPicker = false;
       this.editUser();
     },
